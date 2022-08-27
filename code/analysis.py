@@ -178,3 +178,27 @@ plt.title("PS-Subscription/Date")
 plt.xlabel("Date")
 plt.ylabel("Subscription Count")
 plt.show()
+
+
+ps_unsubscribed_users = unsubscribed_users[unsubscribed_users.service == "ps"]
+subscriptions_date_count = {}
+for item in ps_unsubscribed_users.subscription_date:
+    item = item.split()[0]
+    subscriptions_date_count[item] = subscriptions_date_count.get(item, 0) + 1
+
+start_date = date(2022, 6, 1)
+end_date = date(2022, 6, 30)
+delta = end_date - start_date
+
+keys = []
+for i in range(delta.days + 1):
+    day = str(start_date + timedelta(days=i))
+    keys.append(day)
+    subscriptions_date_count[day] = subscriptions_date_count.get(day, 0)
+
+plt.bar([key[5:] for key in keys], subscriptions_date_count.values())
+plt.xticks(rotation=90)
+plt.title("PS-UnSubscription/Date")
+plt.xlabel("Date")
+plt.ylabel("UnSubscription Count")
+plt.show()
