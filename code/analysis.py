@@ -42,43 +42,58 @@ plt.xlabel("Nan values are ignored (near to zero)")
 plt.show()
 
 
-oses = set(users.os_name)
-oses_count = {}
-for os in oses:
-    count = len(users[users["os_name"] == os])
-    if count > 100:
-        oses_count[os] = count
-oses_count = {
-    k: v for k, v in sorted(oses_count.items(), key=lambda item: item[1])
-}
 
-keys = list(oses_count.keys())
-values = list(oses_count.values())
-
-plt.title("Most Famous OS")
-plt.pie(values, labels=keys, explode=[0, 0.1], autopct="%1.1f%%")
-plt.xlabel(
-    "Just considered OS that have at least 50 users. OS X, Windows Phone, iPadOS, HarmonyOS was ignored."
-)
-plt.show()
-
-
-oses_count = {}
-for os in oses:
-    count = len(users[users["os_name"] == os])
-    if count > 0:
-        oses_count[os] = count
-oses_count = {
-    k: v for k, v in sorted(oses_count.items(), key=lambda item: item[1])
-}
-
-keys = list(oses_count.keys())
-values = list(oses_count.values())
-
-plt.title("Most Famous OS")
-plt.bar(keys, values)
-for i in range(len(keys)):
-    plt.annotate(
-        str(values[i]), xy=(keys[i], values[i]), ha="center", va="bottom"
+android_services_count = {}
+for service in services:
+    android_services_count[service] = len(
+        users[(users["os_name"] == "Android") & (users["service"] == service)]
     )
+
+ios_services_count = {}
+for service in services:
+    ios_services_count[service] = len(
+        users[(users["os_name"] == "iOS") & (users["service"] == service)]
+    )
+
+
+android_services_count = {
+    k: v
+    for k, v in sorted(
+        android_services_count.items(), key=lambda item: item[1], reverse=True
+    )
+}
+
+ios_services_count = {
+    k: v
+    for k, v in sorted(
+        ios_services_count.items(), key=lambda item: item[1], reverse=True
+    )
+}
+
+keys = ["Android", "iOS"]
+values1 = list(android_services_count.values())
+values2 = list(ios_services_count.values())
+
+y1 = [values1[0], values2[0]]
+y2 = [values1[1], values2[1]]
+y3 = [values1[2], values2[2]]
+y4 = [values1[3], values2[3]]
+y5 = [values1[4], values2[4]]
+
+plt.bar(keys, y1)
+plt.bar(keys, y2, bottom=y1)
+plt.bar(keys, y3, bottom=list(map(lambda x, y: x + y, y1, y2)))
+plt.bar(
+    keys,
+    y4,
+    bottom=list(map(lambda x, y, z: x + y + z, y1, y2, y3)),
+)
+plt.bar(
+    keys,
+    y5,
+    bottom=list(map(lambda x, y, z, i: x + y + z + i, y1, y2, y3, y4)),
+)
+plt.title("Services/OS")
+plt.legend(services)
+plt.ylabel("Users Number")
 plt.show()
