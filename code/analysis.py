@@ -118,14 +118,13 @@ start_date = date(2022, 6, 1)
 end_date = date(2022, 6, 30)
 delta = end_date - start_date
 
+keys = []
 for i in range(delta.days + 1):
     day = str(start_date + timedelta(days=i))
+    keys.append(day)
     subscriptions_date_count[day] = subscriptions_date_count.get(day, 0)
 
-plt.bar(
-    [key[5:] for key in subscriptions_date_count.keys()],
-    subscriptions_date_count.values(),
-)
+plt.bar([key[5:] for key in keys], subscriptions_date_count.values())
 plt.xticks(rotation=90)
 plt.title("Subscription/Date")
 plt.xlabel("Date")
@@ -144,14 +143,13 @@ start_date = date(2022, 6, 1)
 end_date = date(2022, 6, 30)
 delta = end_date - start_date
 
+keys = []
 for i in range(delta.days + 1):
     day = str(start_date + timedelta(days=i))
+    keys.append(day)
     unsubscriptions_date_count[day] = unsubscriptions_date_count.get(day, 0)
 
-plt.bar(
-    [key[5:] for key in unsubscriptions_date_count.keys()],
-    unsubscriptions_date_count.values(),
-)
+plt.bar([key[5:] for key in keys], unsubscriptions_date_count.values())
 plt.xticks(rotation=90)
 plt.title("UnSubscription/Date")
 plt.xlabel("Date")
