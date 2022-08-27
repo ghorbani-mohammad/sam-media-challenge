@@ -43,36 +43,46 @@ plt.show()
 
 
 
-android_services_count = {}
+unsubscribed_users = users[users["unsubscription_date"].notna()]
+unsubscribed_android_services_count = {}
 for service in services:
-    android_services_count[service] = len(
-        users[(users["os_name"] == "Android") & (users["service"] == service)]
+    unsubscribed_android_services_count[service] = len(
+        unsubscribed_users[
+            (unsubscribed_users["os_name"] == "Android")
+            & (unsubscribed_users["service"] == service)
+        ]
     )
 
-ios_services_count = {}
+unsubscribed_ios_services_count = {}
 for service in services:
-    ios_services_count[service] = len(
-        users[(users["os_name"] == "iOS") & (users["service"] == service)]
+    unsubscribed_ios_services_count[service] = len(
+        unsubscribed_users[
+            (unsubscribed_users["os_name"] == "iOS")
+            & (unsubscribed_users["service"] == service)
+        ]
     )
 
-
-android_services_count = {
+unsubscribed_android_services_count = {
     k: v
     for k, v in sorted(
-        android_services_count.items(), key=lambda item: item[1], reverse=True
+        unsubscribed_android_services_count.items(),
+        key=lambda item: item[1],
+        reverse=True,
     )
 }
 
-ios_services_count = {
+unsubscribed_ios_services_count = {
     k: v
     for k, v in sorted(
-        ios_services_count.items(), key=lambda item: item[1], reverse=True
+        unsubscribed_ios_services_count.items(),
+        key=lambda item: item[1],
+        reverse=True,
     )
 }
 
 keys = ["Android", "iOS"]
-values1 = list(android_services_count.values())
-values2 = list(ios_services_count.values())
+values1 = list(unsubscribed_android_services_count.values())
+values2 = list(unsubscribed_ios_services_count.values())
 
 y1 = [values1[0], values2[0]]
 y2 = [values1[1], values2[1]]
@@ -95,5 +105,5 @@ plt.bar(
 )
 plt.title("Services/OS")
 plt.legend(services)
-plt.ylabel("Users Number")
+plt.ylabel("Unsubscribed Users Count")
 plt.show()
