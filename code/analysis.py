@@ -107,3 +107,28 @@ plt.title("Services/OS")
 plt.legend(services)
 plt.ylabel("Unsubscribed Users Count")
 plt.show()
+
+
+subscriptions_date_count = {}
+for item in users.subscription_date:
+    item = item.split()[0]
+    subscriptions_date_count[item] = subscriptions_date_count.get(item, 0) + 1
+
+start_date = date(2022, 6, 1)
+end_date = date(2022, 6, 30)
+delta = end_date - start_date
+
+for i in range(delta.days + 1):
+    day = str(start_date + timedelta(days=i))
+    subscriptions_date_count[day] = subscriptions_date_count.get(day, 0)
+subscriptions_date_count
+
+plt.bar(
+    [key[5:] for key in subscriptions_date_count.keys()],
+    subscriptions_date_count.values(),
+)
+plt.xticks(rotation=90)
+plt.title("Subscription/Date")
+plt.xlabel("Date")
+plt.ylabel("Subscription Count")
+plt.show()
