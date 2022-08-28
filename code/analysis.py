@@ -302,7 +302,6 @@ plt.show()
 
 
 transactions_statuses = set(transactions.status)
-print(transactions_statuses)
 statuses_count = {}
 for status in transactions_statuses:
     statuses_count[status] = len(
