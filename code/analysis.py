@@ -19,7 +19,6 @@ oses = list(set(users.os_name))
 oses = ["Android", "iOS", "Windows Phone", "iPadOS", "OS X", "HarmonyOS"]
 transactions_statuses = ["Failed", "Delivered", "Pending"]
 
-# count each services
 services_count = {}
 for service in services:
     services_count[service] = len(users[users["service"] == service])
