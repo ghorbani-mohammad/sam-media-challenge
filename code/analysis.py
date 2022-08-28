@@ -7,10 +7,11 @@ from preprocess import Preprocess
 
 
 class Analyzer:
-    def __init__(self, users, transactions, merged):
+    def __init__(self, users, transactions, merged, unsubscribed_users):
         self.users = users
         self.transactions = transactions
         self.merged = merged
+        self.unsubscribed_users = unsubscribed_users
 
     def draw_most_famous_service(self):
         services_count = {}
@@ -163,24 +164,22 @@ class Analyzer:
         plt.show()
 
     def draw_unsubscription_per_service_per_os(self):
-        unsubscribed_users = self.users[
-            self.users["unsubscription_date"].notna()
-        ]
+        u_users = self.unsubscribed_users
         unsubscribed_android_services_count = {}
         for service in services:
             unsubscribed_android_services_count[service] = len(
-                unsubscribed_users[
-                    (unsubscribed_users["os_name"] == "Android")
-                    & (unsubscribed_users["service"] == service)
+                u_users[
+                    (u_users["os_name"] == "Android")
+                    & (u_users["service"] == service)
                 ]
             )
 
         unsubscribed_ios_services_count = {}
         for service in services:
             unsubscribed_ios_services_count[service] = len(
-                unsubscribed_users[
-                    (unsubscribed_users["os_name"] == "iOS")
-                    & (unsubscribed_users["service"] == service)
+                u_users[
+                    (u_users["os_name"] == "iOS")
+                    & (u_users["service"] == service)
                 ]
             )
 
@@ -259,7 +258,8 @@ class Analyzer:
 
     def draw_unsubscription_per_day(self):
         unsubscriptions_date_count = {}
-        for item in unsubscribed_users.subscription_date:
+        u_users = self.unsubscribed_users
+        for item in u_users.subscription_date:
             item = item.split()[0]
             unsubscriptions_date_count[item] = (
                 unsubscriptions_date_count.get(item, 0) + 1
@@ -285,7 +285,7 @@ class Analyzer:
         plt.show()
 
     def draw_ps_subscription_per_day(self):
-        ps_users = users[users.service == "ps"]
+        ps_users = self.users[self.users.service == "ps"]
         subscriptions_date_count = {}
         for item in ps_users.subscription_date:
             item = item.split()[0]
@@ -313,9 +313,8 @@ class Analyzer:
         plt.show()
 
     def draw_ps_unsubscription_per_day(self):
-        ps_unsubscribed_users = unsubscribed_users[
-            unsubscribed_users.service == "ps"
-        ]
+        u_users = self.unsubscribed_users
+        ps_unsubscribed_users = u_users[u_users.service == "ps"]
         subscriptions_date_count = {}
         for item in ps_unsubscribed_users.subscription_date:
             item = item.split()[0]
@@ -346,7 +345,7 @@ class Analyzer:
         statuses_count = {}
         for status in transactions_statuses:
             statuses_count[status] = len(
-                transactions[transactions["status"] == status]
+                self.transactions[self.transactions["status"] == status]
             )
         statuses_count = {
             k: v
@@ -369,9 +368,9 @@ class Analyzer:
             for service in services:
                 temp.append(
                     len(
-                        transactions[
-                            (transactions.status == status)
-                            & (transactions.service == service)
+                        self.transactions[
+                            (self.transactions.status == status)
+                            & (self.transactions.service == service)
                         ]
                     )
                 )
@@ -446,9 +445,9 @@ class Analyzer:
             for os in oses:
                 temp.append(
                     len(
-                        merged_table[
-                            (merged_table.status == status)
-                            & (merged_table.os_name == os)
+                        self.merged[
+                            (self.merged.status == status)
+                            & (self.merged.os_name == os)
                         ]
                     )
                 )
@@ -482,8 +481,8 @@ class Analyzer:
 
     def draw_delivered_transaction_per_user(self):
         same_user_count = {}
-        for user_id in transactions[
-            transactions.status == "Delivered"
+        for user_id in self.transactions[
+            self.transactions.status == "Delivered"
         ].user_id:
             same_user_count[user_id] = same_user_count.get(user_id, 0) + 1
         same_user_purchase_counter = Counter(same_user_count.values())
@@ -511,11 +510,13 @@ operators = preprocessed_data.operators
 affiliates = preprocessed_data.affiliates
 oses = preprocessed_data.oses
 transactions_statuses = preprocessed_data.transactions_statuses
+unsubscribed_users = preprocessed_data.unsubscribed_users
 
 analyzer = Analyzer(
     users=loader.users_data,
     transactions=loader.transactions_data,
     merged=loader.merged_data,
+    unsubscribed_users=unsubscribed_users,
 )
 analyzer.draw_most_famous_service()
 analyzer.draw_most_famous_affiliate()
@@ -524,3 +525,13 @@ analyzer.draw_most_famous_os_bar()
 analyzer.draw_service_per_os()
 analyzer.draw_unsubscription_per_service_per_os()
 analyzer.draw_subscription_per_day()
+analyzer.draw_unsubscription_per_day()
+analyzer.draw_ps_subscription_per_day()
+analyzer.draw_ps_unsubscription_per_day()
+analyzer.draw_transaction_status()
+analyzer.draw_transaction_status_per_service()
+analyzer.draw_transaction_status_per_operator()
+analyzer.draw_transaction_status_per_affiliate()
+analyzer.draw_transaction_status_per_os()
+analyzer.draw_transaction_per_user()
+analyzer.draw_delivered_transaction_per_user()
