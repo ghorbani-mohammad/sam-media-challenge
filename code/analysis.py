@@ -29,18 +29,21 @@ class Analyzer:
         self.oses = oses
         self.transactions_statuses = transactions_statuses
 
+    def __order_dict__(self, data, reverse=False):
+        return {
+            k: v
+            for k, v in sorted(
+                data.items(), key=lambda item: item[1], reverse=reverse
+            )
+        }
+
     def draw_most_famous_service(self):
         services_count = {}
         for service in self.services:
             services_count[service] = len(
                 self.users[self.users["service"] == service]
             )
-        services_count = {
-            k: v
-            for k, v in sorted(
-                services_count.items(), key=lambda item: item[1]
-            )
-        }
+        services_count = self.__order_dict__(services_count)
         keys = list(services_count.keys())
         values = list(services_count.values())
         plt.title("Most Famous Service")
@@ -55,12 +58,7 @@ class Analyzer:
             affiliates_count[affiliate] = len(
                 self.users[self.users["affiliate"] == affiliate]
             )
-        affiliates_count = {
-            k: v
-            for k, v in sorted(
-                affiliates_count.items(), key=lambda item: item[1]
-            )
-        }
+        affiliates_count = self.__order_dict__(affiliates_count)
         keys = list(affiliates_count.keys())
         values = list(affiliates_count.values())
         plt.title("Most Famous Affiliate")
@@ -74,10 +72,7 @@ class Analyzer:
             count = len(self.users[self.users["os_name"] == os])
             if count > 100:
                 oses_count[os] = count
-        oses_count = {
-            k: v
-            for k, v in sorted(oses_count.items(), key=lambda item: item[1])
-        }
+        oses_count = self.__order_dict__(oses_count)
 
         keys = list(oses_count.keys())
         values = list(oses_count.values())
@@ -95,10 +90,7 @@ class Analyzer:
             count = len(self.users[self.users["os_name"] == os])
             if count > 0:
                 oses_count[os] = count
-        oses_count = {
-            k: v
-            for k, v in sorted(oses_count.items(), key=lambda item: item[1])
-        }
+        oses_count = self.__order_dict__(oses_count)
 
         keys = list(oses_count.keys())
         values = list(oses_count.values())
@@ -133,23 +125,13 @@ class Analyzer:
                 ]
             )
 
-        android_services_count = {
-            k: v
-            for k, v in sorted(
-                android_services_count.items(),
-                key=lambda item: item[1],
-                reverse=True,
-            )
-        }
+        android_services_count = self.__order_dict__(
+            android_services_count, reverse=True
+        )
 
-        ios_services_count = {
-            k: v
-            for k, v in sorted(
-                ios_services_count.items(),
-                key=lambda item: item[1],
-                reverse=True,
-            )
-        }
+        ios_services_count = self.__order_dict__(
+            ios_services_count, reverse=True
+        )
 
         keys = ["Android", "iOS"]
         values1 = list(android_services_count.values())
@@ -199,23 +181,13 @@ class Analyzer:
                 ]
             )
 
-        unsubscribed_android_services_count = {
-            k: v
-            for k, v in sorted(
-                unsubscribed_android_services_count.items(),
-                key=lambda item: item[1],
-                reverse=True,
-            )
-        }
+        unsubscribed_android_services_count = self.__order_dict__(
+            unsubscribed_android_services_count, reverse=True
+        )
 
-        unsubscribed_ios_services_count = {
-            k: v
-            for k, v in sorted(
-                unsubscribed_ios_services_count.items(),
-                key=lambda item: item[1],
-                reverse=True,
-            )
-        }
+        unsubscribed_ios_services_count = self.__order_dict__(
+            unsubscribed_ios_services_count, reverse=True
+        )
 
         keys = ["Android", "iOS"]
         values1 = list(unsubscribed_android_services_count.values())
@@ -363,12 +335,7 @@ class Analyzer:
             statuses_count[status] = len(
                 self.transactions[self.transactions["status"] == status]
             )
-        statuses_count = {
-            k: v
-            for k, v in sorted(
-                statuses_count.items(), key=lambda item: item[1]
-            )
-        }
+        statuses_count = self.__order_dict__(statuses_count)
         keys = list(statuses_count.keys())
         values = list(statuses_count.values())
 
