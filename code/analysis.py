@@ -432,3 +432,21 @@ plt.title("Transactions/Users")
 plt.xlabel("Number of Transaction")
 plt.ylabel("Number of Users")
 plt.show()
+
+
+same_user_count = {}
+for user_id in transactions[transactions.status == "Delivered"].user_id:
+    same_user_count[user_id] = same_user_count.get(user_id, 0) + 1
+same_user_purchase_counter = Counter(same_user_count.values())
+keys = sorted(same_user_purchase_counter.keys())
+values = []
+keys2 = []
+for item in keys:
+    if same_user_purchase_counter[item] > 100:
+        keys2.append(item)
+        values.append(same_user_purchase_counter[item])
+plt.bar(keys2, values)
+plt.title("DeliveredTransactions/Users")
+plt.xlabel("Number of Delivered Transaction")
+plt.ylabel("Number of Users")
+plt.show()
