@@ -36,7 +36,7 @@ class Analyzer:
         affiliates_count = {}
         for affiliate in affiliates:
             affiliates_count[affiliate] = len(
-                users[users["affiliate"] == affiliate]
+                self.users[self.users["affiliate"] == affiliate]
             )
         affiliates_count = {
             k: v
@@ -54,7 +54,7 @@ class Analyzer:
     def draw_most_famous_os_pie(self):
         oses_count = {}
         for os in oses:
-            count = len(users[users["os_name"] == os])
+            count = len(self.users[self.users["os_name"] == os])
             if count > 100:
                 oses_count[os] = count
         oses_count = {
@@ -75,7 +75,7 @@ class Analyzer:
     def draw_most_famous_os_bar(self):
         oses_count = {}
         for os in oses:
-            count = len(users[users["os_name"] == os])
+            count = len(self.users[self.users["os_name"] == os])
             if count > 0:
                 oses_count[os] = count
         oses_count = {
@@ -101,17 +101,18 @@ class Analyzer:
         android_services_count = {}
         for service in services:
             android_services_count[service] = len(
-                users[
-                    (users["os_name"] == "Android")
-                    & (users["service"] == service)
+                self.users[
+                    (self.users["os_name"] == "Android")
+                    & (self.users["service"] == service)
                 ]
             )
 
         ios_services_count = {}
         for service in services:
             ios_services_count[service] = len(
-                users[
-                    (users["os_name"] == "iOS") & (users["service"] == service)
+                self.users[
+                    (self.users["os_name"] == "iOS")
+                    & (self.users["service"] == service)
                 ]
             )
 
@@ -162,7 +163,9 @@ class Analyzer:
         plt.show()
 
     def draw_unsubscription_per_service_per_os(self):
-        unsubscribed_users = users[users["unsubscription_date"].notna()]
+        unsubscribed_users = self.users[
+            self.users["unsubscription_date"].notna()
+        ]
         unsubscribed_android_services_count = {}
         for service in services:
             unsubscribed_android_services_count[service] = len(
@@ -229,7 +232,7 @@ class Analyzer:
 
     def draw_subscription_per_day(self):
         subscriptions_date_count = {}
-        for item in users.subscription_date:
+        for item in self.users.subscription_date:
             item = item.split()[0]
             subscriptions_date_count[item] = (
                 subscriptions_date_count.get(item, 0) + 1
@@ -515,3 +518,9 @@ analyzer = Analyzer(
     merged=loader.merged_data,
 )
 analyzer.draw_most_famous_service()
+analyzer.draw_most_famous_affiliate()
+analyzer.draw_most_famous_os_pie()
+analyzer.draw_most_famous_os_bar()
+analyzer.draw_service_per_os()
+analyzer.draw_unsubscription_per_service_per_os()
+analyzer.draw_subscription_per_day()
