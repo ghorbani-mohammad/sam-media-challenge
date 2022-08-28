@@ -512,6 +512,25 @@ oses = preprocessed_data.oses
 transactions_statuses = preprocessed_data.transactions_statuses
 unsubscribed_users = preprocessed_data.unsubscribed_users
 
+
+class Draw:
+    def __init__(self, analyzer):
+        self.analyzer = analyzer
+
+    def draw(self):
+        draw_methods = [
+            method_name
+            for method_name in dir(self.analyzer)
+            if callable(getattr(self.analyzer, method_name))
+            and "__" not in method_name
+        ]
+        for method in draw_methods:
+            resp = input(f"{method}? (y/n) ")
+            if resp == "y":
+                func = getattr(self.analyzer, method)
+                func()
+
+
 analyzer = Analyzer(
     users=loader.users_data,
     transactions=loader.transactions_data,
@@ -519,13 +538,5 @@ analyzer = Analyzer(
     unsubscribed_users=unsubscribed_users,
 )
 
-draw_methods = [
-    method_name
-    for method_name in dir(analyzer)
-    if callable(getattr(analyzer, method_name)) and "__" not in method_name
-]
-for method in draw_methods:
-    resp = input(f"{method}? (y/n) ")
-    if resp == "y":
-        func = getattr(analyzer, method)
-        func()
+drawer = Draw(analyzer)
+drawer.draw()
