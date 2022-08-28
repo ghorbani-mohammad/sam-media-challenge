@@ -37,14 +37,11 @@ class Analyze:
             )
         }
 
-    def __get_os_services_count__(self, os):
+    def __get_os_services_count__(self, data, os):
         result = {}
         for service in self.services:
             result[service] = len(
-                self.users[
-                    (self.users["os_name"] == os)
-                    & (self.users["service"] == service)
-                ]
+                data[(data["os_name"] == os) & (data["service"] == service)]
             )
         return result
 
@@ -112,8 +109,12 @@ class Analyze:
         plt.show()
 
     def draw_service_per_os(self):
-        android_services_count = self.__get_os_services_count__(os="Android")
-        ios_services_count = self.__get_os_services_count__(os="iOS")
+        android_services_count = self.__get_os_services_count__(
+            data=self.users, os="Android"
+        )
+        ios_services_count = self.__get_os_services_count__(
+            data=self.users, os="iOS"
+        )
         android_services_count = self.__order_dict__(
             android_services_count, reverse=True
         )
@@ -151,28 +152,15 @@ class Analyze:
 
     def draw_unsubscription_per_service_per_os(self):
         u_users = self.unsubscribed_users
-        unsubscribed_android_services_count = {}
-        for service in self.services:
-            unsubscribed_android_services_count[service] = len(
-                u_users[
-                    (u_users["os_name"] == "Android")
-                    & (u_users["service"] == service)
-                ]
-            )
-
-        unsubscribed_ios_services_count = {}
-        for service in self.services:
-            unsubscribed_ios_services_count[service] = len(
-                u_users[
-                    (u_users["os_name"] == "iOS")
-                    & (u_users["service"] == service)
-                ]
-            )
-
+        unsubscribed_android_services_count = self.__get_os_services_count__(
+            data=u_users, os="Android"
+        )
+        unsubscribed_ios_services_count = self.__get_os_services_count__(
+            data=u_users, os="iOS"
+        )
         unsubscribed_android_services_count = self.__order_dict__(
             unsubscribed_android_services_count, reverse=True
         )
-
         unsubscribed_ios_services_count = self.__order_dict__(
             unsubscribed_ios_services_count, reverse=True
         )
