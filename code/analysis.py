@@ -91,7 +91,7 @@ class Analyze:
         values = list(oses_count.values())
         plt.title("Most Famous OS")
         plt.bar(keys, values)
-        for i in range(len(keys)):
+        for i in range(len(keys)):  # show values on top of bars
             plt.annotate(
                 str(values[i]),
                 xy=(keys[i], values[i]),
