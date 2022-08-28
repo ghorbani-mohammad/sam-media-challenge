@@ -75,6 +75,11 @@ class Analyze:
             data[day] = data.get(day, 0)
         return keys, data
 
+    def __complete_days_counter__(self, data):
+        result = self.__date_counter__(data)
+        keys, result = self.__complete_days__(result)
+        return keys, result
+
     def draw_01_most_famous_service(self):
         services_count = {}
         for service in self.services:
@@ -208,13 +213,9 @@ class Analyze:
         plt.show()
 
     def draw_07_subscription_per_day(self):
-        subscriptions_date_count = self.__date_counter__(
+        keys, subscriptions_date_count = self.__complete_days_counter__(
             self.users.subscription_date
         )
-        keys, subscriptions_date_count = self.__complete_days__(
-            subscriptions_date_count
-        )
-
         plt.bar([key[5:] for key in keys], subscriptions_date_count.values())
         plt.xticks(rotation=90)
         plt.title("Subscription/Date")
@@ -223,13 +224,9 @@ class Analyze:
         plt.show()
 
     def draw_08_unsubscription_per_day(self):
-        unsubscriptions_date_count = self.__date_counter__(
+        keys, unsubscriptions_date_count = self.__complete_days_counter__(
             self.unsubscribed_users.subscription_date
         )
-        keys, unsubscriptions_date_count = self.__complete_days__(
-            unsubscriptions_date_count
-        )
-
         plt.bar([key[5:] for key in keys], unsubscriptions_date_count.values())
         plt.xticks(rotation=90)
         plt.title("UnSubscription/Date")
@@ -239,13 +236,9 @@ class Analyze:
 
     def draw_09_ps_subscription_per_day(self):
         ps_users = self.users[self.users.service == "ps"]
-        subscriptions_date_count = self.__date_counter__(
+        keys, subscriptions_date_count = self.__complete_days_counter__(
             ps_users.subscription_date
         )
-        keys, subscriptions_date_count = self.__complete_days__(
-            subscriptions_date_count
-        )
-
         plt.bar([key[5:] for key in keys], subscriptions_date_count.values())
         plt.xticks(rotation=90)
         plt.title("PS-Subscription/Date")
@@ -256,13 +249,9 @@ class Analyze:
     def draw_10_ps_unsubscription_per_day(self):
         u_users = self.unsubscribed_users
         ps_unsubscribed_users = u_users[u_users.service == "ps"]
-        subscriptions_date_count = self.__date_counter__(
+        keys, subscriptions_date_count = self.__complete_days_counter__(
             ps_unsubscribed_users.subscription_date
         )
-        keys, subscriptions_date_count = self.__complete_days__(
-            subscriptions_date_count
-        )
-
         plt.bar([key[5:] for key in keys], subscriptions_date_count.values())
         plt.xticks(rotation=90)
         plt.title("PS-UnSubscription/Date")
