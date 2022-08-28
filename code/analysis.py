@@ -6,8 +6,8 @@ from datetime import date, timedelta
 from load import Loader
 
 
-users = Loader(path="data\\users.csv", sep=",").file
-transactions = Loader(path="data\\transactions.tsv", sep="\t").file
+users = Loader(path="data\\users.csv", sep=",").data
+transactions = Loader(path="data\\transactions.tsv", sep="\t").data
 merged_table = pd.merge(users, transactions, how="inner", on="user_id")
 
 
