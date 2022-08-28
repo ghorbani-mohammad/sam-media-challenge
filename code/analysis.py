@@ -53,6 +53,12 @@ class Analyze:
             result = list(map(lambda x, y: x + y, result, d))
         return result
 
+    def __june_days__(self):
+        start_date = date(2022, 6, 1)
+        end_date = date(2022, 6, 30)
+        delta = end_date - start_date
+        return range(delta.days + 1)
+
     def draw_01_most_famous_service(self):
         services_count = {}
         for service in self.services:
@@ -192,13 +198,9 @@ class Analyze:
             subscriptions_date_count[item] = (
                 subscriptions_date_count.get(item, 0) + 1
             )
-
-        start_date = date(2022, 6, 1)
-        end_date = date(2022, 6, 30)
-        delta = end_date - start_date
-
         keys = []
-        for i in range(delta.days + 1):
+        start_date = date(2022, 6, 1)
+        for i in self.__june_days__():
             day = str(start_date + timedelta(days=i))
             keys.append(day)
             subscriptions_date_count[day] = subscriptions_date_count.get(
@@ -221,12 +223,9 @@ class Analyze:
                 unsubscriptions_date_count.get(item, 0) + 1
             )
 
-        start_date = date(2022, 6, 1)
-        end_date = date(2022, 6, 30)
-        delta = end_date - start_date
-
         keys = []
-        for i in range(delta.days + 1):
+        start_date = date(2022, 6, 1)
+        for i in self.__june_days__():
             day = str(start_date + timedelta(days=i))
             keys.append(day)
             unsubscriptions_date_count[day] = unsubscriptions_date_count.get(
@@ -249,12 +248,9 @@ class Analyze:
                 subscriptions_date_count.get(item, 0) + 1
             )
 
-        start_date = date(2022, 6, 1)
-        end_date = date(2022, 6, 30)
-        delta = end_date - start_date
-
         keys = []
-        for i in range(delta.days + 1):
+        start_date = date(2022, 6, 1)
+        for i in self.__june_days__():
             day = str(start_date + timedelta(days=i))
             keys.append(day)
             subscriptions_date_count[day] = subscriptions_date_count.get(
@@ -278,12 +274,9 @@ class Analyze:
                 subscriptions_date_count.get(item, 0) + 1
             )
 
-        start_date = date(2022, 6, 1)
-        end_date = date(2022, 6, 30)
-        delta = end_date - start_date
-
         keys = []
-        for i in range(delta.days + 1):
+        start_date = date(2022, 6, 1)
+        for i in self.__june_days__():
             day = str(start_date + timedelta(days=i))
             keys.append(day)
             subscriptions_date_count[day] = subscriptions_date_count.get(
