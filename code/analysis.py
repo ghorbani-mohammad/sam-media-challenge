@@ -332,11 +332,35 @@ for status in transactions_statuses:
         )
     y.append(temp)
 
-plt.bar(list(services), y[0])
-plt.bar(list(services), y[1], bottom=y[0])
-plt.bar(list(services), y[2], bottom=list(map(lambda x, y: x + y, y[0], y[1])))
+plt.bar(services, y[0])
+plt.bar(services, y[1], bottom=y[0])
+plt.bar(services, y[2], bottom=list(map(lambda x, y: x + y, y[0], y[1])))
 plt.title("TransactionService/Status")
 plt.legend(transactions_statuses)
 plt.xlabel("Service")
+plt.ylabel("Number")
+plt.show()
+
+
+y = []
+for status in transactions_statuses:
+    temp = []
+    for operator in operators:
+        temp.append(
+            len(
+                transactions[
+                    (transactions.status == status)
+                    & (transactions.phone_operator == operator)
+                ]
+            )
+        )
+    y.append(temp)
+
+plt.bar(operators, y[0])
+plt.bar(operators, y[1], bottom=y[0])
+plt.bar(operators, y[2], bottom=list(map(lambda x, y: x + y, y[0], y[1])))
+plt.title("TransactionOperator/Status")
+plt.legend(transactions_statuses)
+plt.xlabel("Operator")
 plt.ylabel("Number")
 plt.show()
