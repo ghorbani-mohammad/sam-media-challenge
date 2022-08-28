@@ -15,6 +15,9 @@ class Analyzer:
         unsubscribed_users,
         services,
         operators,
+        affiliates,
+        oses,
+        transactions_statuses,
     ):
         self.users = users
         self.transactions = transactions
@@ -22,6 +25,9 @@ class Analyzer:
         self.unsubscribed_users = unsubscribed_users
         self.services = services
         self.operators = operators
+        self.affiliates = affiliates
+        self.oses = oses
+        self.transactions_statuses = transactions_statuses
 
     def draw_most_famous_service(self):
         services_count = {}
@@ -45,7 +51,7 @@ class Analyzer:
 
     def draw_most_famous_affiliate(self):
         affiliates_count = {}
-        for affiliate in affiliates:
+        for affiliate in self.affiliates:
             affiliates_count[affiliate] = len(
                 self.users[self.users["affiliate"] == affiliate]
             )
@@ -64,7 +70,7 @@ class Analyzer:
 
     def draw_most_famous_os_pie(self):
         oses_count = {}
-        for os in oses:
+        for os in self.oses:
             count = len(self.users[self.users["os_name"] == os])
             if count > 100:
                 oses_count[os] = count
@@ -85,7 +91,7 @@ class Analyzer:
 
     def draw_most_famous_os_bar(self):
         oses_count = {}
-        for os in oses:
+        for os in self.oses:
             count = len(self.users[self.users["os_name"] == os])
             if count > 0:
                 oses_count[os] = count
@@ -353,7 +359,7 @@ class Analyzer:
 
     def draw_transaction_status(self):
         statuses_count = {}
-        for status in transactions_statuses:
+        for status in self.transactions_statuses:
             statuses_count[status] = len(
                 self.transactions[self.transactions["status"] == status]
             )
@@ -373,7 +379,7 @@ class Analyzer:
 
     def draw_transaction_status_per_service(self):
         y = []
-        for status in transactions_statuses:
+        for status in self.transactions_statuses:
             temp = []
             for service in self.services:
                 temp.append(
@@ -394,14 +400,14 @@ class Analyzer:
             bottom=list(map(lambda x, y: x + y, y[0], y[1])),
         )
         plt.title("TransactionService/Status")
-        plt.legend(transactions_statuses)
+        plt.legend(self.transactions_statuses)
         plt.xlabel("Service")
         plt.ylabel("Number")
         plt.show()
 
     def draw_transaction_status_per_operator(self):
         y = []
-        for status in transactions_statuses:
+        for status in self.transactions_statuses:
             temp = []
             for operator in self.operators:
                 temp.append(
@@ -422,16 +428,16 @@ class Analyzer:
             bottom=list(map(lambda x, y: x + y, y[0], y[1])),
         )
         plt.title("TransactionOperator/Status")
-        plt.legend(transactions_statuses)
+        plt.legend(self.transactions_statuses)
         plt.xlabel("Operator")
         plt.ylabel("Number")
         plt.show()
 
     def draw_transaction_status_per_affiliate(self):
         y = []
-        for status in transactions_statuses:
+        for status in self.transactions_statuses:
             temp = []
-            for affiliate in affiliates:
+            for affiliate in self.affiliates:
                 temp.append(
                     len(
                         self.merged[
@@ -441,22 +447,24 @@ class Analyzer:
                     )
                 )
             y.append(temp)
-        plt.bar(affiliates, y[0])
-        plt.bar(affiliates, y[1], bottom=y[0])
+        plt.bar(self.affiliates, y[0])
+        plt.bar(self.affiliates, y[1], bottom=y[0])
         plt.bar(
-            affiliates, y[2], bottom=list(map(lambda x, y: x + y, y[0], y[1]))
+            self.affiliates,
+            y[2],
+            bottom=list(map(lambda x, y: x + y, y[0], y[1])),
         )
         plt.title("TransactionAffiliate/Status")
-        plt.legend(transactions_statuses)
+        plt.legend(self.transactions_statuses)
         plt.xlabel("Affiliate")
         plt.ylabel("Number")
         plt.show()
 
     def draw_transaction_status_per_os(self):
         y = []
-        for status in transactions_statuses:
+        for status in self.transactions_statuses:
             temp = []
-            for os in oses:
+            for os in self.oses:
                 temp.append(
                     len(
                         self.merged[
@@ -466,11 +474,13 @@ class Analyzer:
                     )
                 )
             y.append(temp)
-        plt.bar(oses, y[0])
-        plt.bar(oses, y[1], bottom=y[0])
-        plt.bar(oses, y[2], bottom=list(map(lambda x, y: x + y, y[0], y[1])))
+        plt.bar(self.oses, y[0])
+        plt.bar(self.oses, y[1], bottom=y[0])
+        plt.bar(
+            self.oses, y[2], bottom=list(map(lambda x, y: x + y, y[0], y[1]))
+        )
         plt.title("TransactionOS/Status")
-        plt.legend(transactions_statuses)
+        plt.legend(self.transactions_statuses)
         plt.xlabel("OS")
         plt.ylabel("Number")
         plt.show()
@@ -519,11 +529,6 @@ loader = Loader("data\\users.csv", "data\\transactions.tsv")
 preprocessed_data = Preprocess(loader.users_data, loader.transactions_data)
 preprocessed_data.extract_entities()
 
-affiliates = preprocessed_data.affiliates
-oses = preprocessed_data.oses
-transactions_statuses = preprocessed_data.transactions_statuses
-unsubscribed_users = preprocessed_data.unsubscribed_users
-
 
 class Draw:
     def __init__(self, analyzer):
@@ -551,9 +556,12 @@ analyzer = Analyzer(
     users=loader.users_data,
     transactions=loader.transactions_data,
     merged=loader.merged_data,
-    unsubscribed_users=unsubscribed_users,
+    unsubscribed_users=preprocessed_data.unsubscribed_users,
     services=preprocessed_data.services,
     operators=preprocessed_data.operators,
+    affiliates=preprocessed_data.affiliates,
+    oses=preprocessed_data.oses,
+    transactions_statuses=preprocessed_data.transactions_statuses,
 )
 
 drawer = Draw(analyzer)
