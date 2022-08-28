@@ -85,9 +85,7 @@ class Analyze:
     def draw_most_famous_os_bar(self):
         oses_count = {}
         for os in self.oses:
-            count = len(self.users[self.users["os_name"] == os])
-            if count > 0:
-                oses_count[os] = count
+            oses_count[os] = len(self.users[self.users["os_name"] == os])
         oses_count = self.__order_dict__(oses_count)
         keys = list(oses_count.keys())
         values = list(oses_count.values())
