@@ -21,7 +21,7 @@ transactions_statuses = preprocessed_data.transactions_statuses
 
 
 class Analyzer:
-    def draw_most_famous_service():
+    def draw_most_famous_service(self):
         services_count = {}
         for service in services:
             services_count[service] = len(users[users["service"] == service])
@@ -39,7 +39,7 @@ class Analyzer:
         )
         plt.show()
 
-    def draw_most_famous_affiliate():
+    def draw_most_famous_affiliate(self):
         affiliates_count = {}
         for affiliate in affiliates:
             affiliates_count[affiliate] = len(
@@ -58,7 +58,7 @@ class Analyzer:
         plt.xlabel("Nan values are ignored (near to zero)")
         plt.show()
 
-    def draw_most_famous_os_pie():
+    def draw_most_famous_os_pie(self):
         oses_count = {}
         for os in oses:
             count = len(users[users["os_name"] == os])
@@ -79,7 +79,7 @@ class Analyzer:
         )
         plt.show()
 
-    def draw_most_famous_os_bar():
+    def draw_most_famous_os_bar(self):
         oses_count = {}
         for os in oses:
             count = len(users[users["os_name"] == os])
@@ -104,7 +104,7 @@ class Analyzer:
             )
         plt.show()
 
-    def draw_service_per_os():
+    def draw_service_per_os(self):
         android_services_count = {}
         for service in services:
             android_services_count[service] = len(
@@ -168,7 +168,7 @@ class Analyzer:
         plt.ylabel("Users Number")
         plt.show()
 
-    def draw_unsubscription_per_service_per_os():
+    def draw_unsubscription_per_service_per_os(self):
         unsubscribed_users = users[users["unsubscription_date"].notna()]
         unsubscribed_android_services_count = {}
         for service in services:
@@ -234,7 +234,7 @@ class Analyzer:
         plt.ylabel("Unsubscribed Users Count")
         plt.show()
 
-    def draw_subscription_per_day():
+    def draw_subscription_per_day(self):
         subscriptions_date_count = {}
         for item in users.subscription_date:
             item = item.split()[0]
@@ -261,7 +261,7 @@ class Analyzer:
         plt.ylabel("Subscription Count")
         plt.show()
 
-    def draw_unsubscription_per_day():
+    def draw_unsubscription_per_day(self):
         unsubscriptions_date_count = {}
         for item in unsubscribed_users.subscription_date:
             item = item.split()[0]
@@ -288,7 +288,7 @@ class Analyzer:
         plt.ylabel("UnSubscription Count")
         plt.show()
 
-    def draw_ps_subscription_per_day():
+    def draw_ps_subscription_per_day(self):
         ps_users = users[users.service == "ps"]
         subscriptions_date_count = {}
         for item in ps_users.subscription_date:
@@ -316,7 +316,7 @@ class Analyzer:
         plt.ylabel("Subscription Count")
         plt.show()
 
-    def draw_ps_unsubscription_per_day():
+    def draw_ps_unsubscription_per_day(self):
         ps_unsubscribed_users = unsubscribed_users[
             unsubscribed_users.service == "ps"
         ]
@@ -346,7 +346,7 @@ class Analyzer:
         plt.ylabel("UnSubscription Count")
         plt.show()
 
-    def draw_transaction_status():
+    def draw_transaction_status(self):
         statuses_count = {}
         for status in transactions_statuses:
             statuses_count[status] = len(
@@ -366,7 +366,7 @@ class Analyzer:
         plt.xlabel("Nan values are ignored (near to zero)")
         plt.show()
 
-    def draw_transaction_status_per_service():
+    def draw_transaction_status_per_service(self):
         y = []
         for status in transactions_statuses:
             temp = []
@@ -392,7 +392,7 @@ class Analyzer:
         plt.ylabel("Number")
         plt.show()
 
-    def draw_transaction_status_per_operator():
+    def draw_transaction_status_per_operator(self):
         y = []
         for status in transactions_statuses:
             temp = []
@@ -418,7 +418,7 @@ class Analyzer:
         plt.ylabel("Number")
         plt.show()
 
-    def draw_transaction_status_per_affiliate():
+    def draw_transaction_status_per_affiliate(self):
         y = []
         for status in transactions_statuses:
             temp = []
@@ -443,7 +443,7 @@ class Analyzer:
         plt.ylabel("Number")
         plt.show()
 
-    def draw_transaction_status_per_os():
+    def draw_transaction_status_per_os(self):
         y = []
         for status in transactions_statuses:
             temp = []
@@ -466,7 +466,7 @@ class Analyzer:
         plt.ylabel("Number")
         plt.show()
 
-    def draw_transaction_per_user():
+    def draw_transaction_per_user(self):
         same_user_count = {}
         for user_id in transactions.user_id:
             same_user_count[user_id] = same_user_count.get(user_id, 0) + 1
@@ -484,7 +484,7 @@ class Analyzer:
         plt.ylabel("Number of Users")
         plt.show()
 
-    def draw_delivered_transaction_per_user():
+    def draw_delivered_transaction_per_user(self):
         same_user_count = {}
         for user_id in transactions[
             transactions.status == "Delivered"
@@ -503,3 +503,7 @@ class Analyzer:
         plt.xlabel("Number of Delivered Transaction")
         plt.ylabel("Number of Users")
         plt.show()
+
+
+analyzer = Analyzer()
+analyzer.draw_most_famous_service()
