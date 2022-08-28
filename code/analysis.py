@@ -45,7 +45,15 @@ class Analyze:
             )
         return result
 
-    def draw_most_famous_service(self):
+    def __sum_array__(self, a, b, c=None, d=None):
+        result = list(map(lambda x, y: x + y, a, b))
+        if c:
+            result = list(map(lambda x, y: x + y, result, c))
+        if d:
+            result = list(map(lambda x, y: x + y, result, d))
+        return result
+
+    def draw_01_most_famous_service(self):
         services_count = {}
         for service in self.services:
             services_count[service] = len(
@@ -60,7 +68,7 @@ class Analyze:
         )
         plt.show()
 
-    def draw_most_famous_affiliate(self):
+    def draw_02_most_famous_affiliate(self):
         affiliates_count = {}
         for affiliate in self.affiliates:
             affiliates_count[affiliate] = len(
@@ -74,7 +82,7 @@ class Analyze:
         plt.xlabel("Nan values are ignored (near to zero)")
         plt.show()
 
-    def draw_most_famous_os_pie(self):
+    def draw_03_most_famous_os_pie(self):
         oses_count = {}
         for os in self.oses:
             count = len(self.users[self.users["os_name"] == os])
@@ -90,7 +98,7 @@ class Analyze:
         )
         plt.show()
 
-    def draw_most_famous_os_bar(self):
+    def draw_04_most_famous_os_bar(self):
         oses_count = {}
         for os in self.oses:
             oses_count[os] = len(self.users[self.users["os_name"] == os])
@@ -108,7 +116,7 @@ class Analyze:
             )
         plt.show()
 
-    def draw_service_per_os(self):
+    def draw_05_service_per_os(self):
         android_services_count = self.__get_os_services_count__(
             data=self.users, os="Android"
         )
@@ -134,23 +142,15 @@ class Analyze:
 
         plt.bar(keys, y1)
         plt.bar(keys, y2, bottom=y1)
-        plt.bar(keys, y3, bottom=list(map(lambda x, y: x + y, y1, y2)))
-        plt.bar(
-            keys,
-            y4,
-            bottom=list(map(lambda x, y, z: x + y + z, y1, y2, y3)),
-        )
-        plt.bar(
-            keys,
-            y5,
-            bottom=list(map(lambda x, y, z, i: x + y + z + i, y1, y2, y3, y4)),
-        )
+        plt.bar(keys, y3, bottom=self.__sum_array__(y1, y2))
+        plt.bar(keys, y4, bottom=self.__sum_array__(y1, y2, y3))
+        plt.bar(keys, y5, bottom=self.__sum_array__(y1, y2, y3, y4))
         plt.title("Services/OS")
         plt.legend(self.services)
         plt.ylabel("Users Number")
         plt.show()
 
-    def draw_unsubscription_per_service_per_os(self):
+    def draw_06_unsubscription_per_service_per_os(self):
         u_users = self.unsubscribed_users
         unsubscribed_android_services_count = self.__get_os_services_count__(
             data=u_users, os="Android"
@@ -177,23 +177,15 @@ class Analyze:
 
         plt.bar(keys, y1)
         plt.bar(keys, y2, bottom=y1)
-        plt.bar(keys, y3, bottom=list(map(lambda x, y: x + y, y1, y2)))
-        plt.bar(
-            keys,
-            y4,
-            bottom=list(map(lambda x, y, z: x + y + z, y1, y2, y3)),
-        )
-        plt.bar(
-            keys,
-            y5,
-            bottom=list(map(lambda x, y, z, i: x + y + z + i, y1, y2, y3, y4)),
-        )
+        plt.bar(keys, y3, bottom=self.__sum_array__(y1, y2))
+        plt.bar(keys, y4, bottom=self.__sum_array__(y1, y2, y3))
+        plt.bar(keys, y5, bottom=self.__sum_array__(y1, y2, y3, y4))
         plt.title("Services/OS")
         plt.legend(self.services)
         plt.ylabel("Unsubscribed Users Count")
         plt.show()
 
-    def draw_subscription_per_day(self):
+    def draw_07_subscription_per_day(self):
         subscriptions_date_count = {}
         for item in self.users.subscription_date:
             item = item.split()[0]
@@ -220,7 +212,7 @@ class Analyze:
         plt.ylabel("Subscription Count")
         plt.show()
 
-    def draw_unsubscription_per_day(self):
+    def draw_08_unsubscription_per_day(self):
         unsubscriptions_date_count = {}
         u_users = self.unsubscribed_users
         for item in u_users.subscription_date:
@@ -248,7 +240,7 @@ class Analyze:
         plt.ylabel("UnSubscription Count")
         plt.show()
 
-    def draw_ps_subscription_per_day(self):
+    def draw_09_ps_subscription_per_day(self):
         ps_users = self.users[self.users.service == "ps"]
         subscriptions_date_count = {}
         for item in ps_users.subscription_date:
@@ -276,7 +268,7 @@ class Analyze:
         plt.ylabel("Subscription Count")
         plt.show()
 
-    def draw_ps_unsubscription_per_day(self):
+    def draw_10_ps_unsubscription_per_day(self):
         u_users = self.unsubscribed_users
         ps_unsubscribed_users = u_users[u_users.service == "ps"]
         subscriptions_date_count = {}
@@ -305,7 +297,7 @@ class Analyze:
         plt.ylabel("UnSubscription Count")
         plt.show()
 
-    def draw_transaction_status(self):
+    def draw_11_transaction_status(self):
         statuses_count = {}
         for status in self.transactions_statuses:
             statuses_count[status] = len(
@@ -320,7 +312,7 @@ class Analyze:
         plt.xlabel("Nan values are ignored (near to zero)")
         plt.show()
 
-    def draw_transaction_status_per_service(self):
+    def draw_12_transaction_status_per_service(self):
         y = []
         for status in self.transactions_statuses:
             temp = []
@@ -348,7 +340,7 @@ class Analyze:
         plt.ylabel("Number")
         plt.show()
 
-    def draw_transaction_status_per_operator(self):
+    def draw_13_transaction_status_per_operator(self):
         y = []
         for status in self.transactions_statuses:
             temp = []
@@ -376,7 +368,7 @@ class Analyze:
         plt.ylabel("Number")
         plt.show()
 
-    def draw_transaction_status_per_affiliate(self):
+    def draw_14_transaction_status_per_affiliate(self):
         y = []
         for status in self.transactions_statuses:
             temp = []
@@ -403,7 +395,7 @@ class Analyze:
         plt.ylabel("Number")
         plt.show()
 
-    def draw_transaction_status_per_os(self):
+    def draw_15_transaction_status_per_os(self):
         y = []
         for status in self.transactions_statuses:
             temp = []
@@ -428,7 +420,7 @@ class Analyze:
         plt.ylabel("Number")
         plt.show()
 
-    def draw_transaction_per_user(self):
+    def draw_16_transaction_per_user(self):
         same_user_count = {}
         for user_id in self.transactions.user_id:
             same_user_count[user_id] = same_user_count.get(user_id, 0) + 1
@@ -446,7 +438,7 @@ class Analyze:
         plt.ylabel("Number of Users")
         plt.show()
 
-    def draw_delivered_transaction_per_user(self):
+    def draw_17_delivered_transaction_per_user(self):
         same_user_count = {}
         for user_id in self.transactions[
             self.transactions.status == "Delivered"
