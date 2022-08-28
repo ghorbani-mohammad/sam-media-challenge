@@ -59,6 +59,13 @@ class Analyze:
         delta = end_date - start_date
         return range(delta.days + 1)
 
+    def __date_counter__(self, data):
+        result = {}
+        for item in data:
+            item = item.split()[0]
+            result[item] = result.get(item, 0) + 1
+        return result
+
     def draw_01_most_famous_service(self):
         services_count = {}
         for service in self.services:
@@ -192,12 +199,9 @@ class Analyze:
         plt.show()
 
     def draw_07_subscription_per_day(self):
-        subscriptions_date_count = {}
-        for item in self.users.subscription_date:
-            item = item.split()[0]
-            subscriptions_date_count[item] = (
-                subscriptions_date_count.get(item, 0) + 1
-            )
+        subscriptions_date_count = self.__date_counter__(
+            self.users.subscription_date
+        )
         keys = []
         start_date = date(2022, 6, 1)
         for i in self.__june_days__():
@@ -215,14 +219,9 @@ class Analyze:
         plt.show()
 
     def draw_08_unsubscription_per_day(self):
-        unsubscriptions_date_count = {}
-        u_users = self.unsubscribed_users
-        for item in u_users.subscription_date:
-            item = item.split()[0]
-            unsubscriptions_date_count[item] = (
-                unsubscriptions_date_count.get(item, 0) + 1
-            )
-
+        unsubscriptions_date_count = self.__date_counter__(
+            self.unsubscribed_users.subscription_date
+        )
         keys = []
         start_date = date(2022, 6, 1)
         for i in self.__june_days__():
@@ -241,12 +240,9 @@ class Analyze:
 
     def draw_09_ps_subscription_per_day(self):
         ps_users = self.users[self.users.service == "ps"]
-        subscriptions_date_count = {}
-        for item in ps_users.subscription_date:
-            item = item.split()[0]
-            subscriptions_date_count[item] = (
-                subscriptions_date_count.get(item, 0) + 1
-            )
+        subscriptions_date_count = self.__date_counter__(
+            ps_users.subscription_date
+        )
 
         keys = []
         start_date = date(2022, 6, 1)
@@ -267,12 +263,9 @@ class Analyze:
     def draw_10_ps_unsubscription_per_day(self):
         u_users = self.unsubscribed_users
         ps_unsubscribed_users = u_users[u_users.service == "ps"]
-        subscriptions_date_count = {}
-        for item in ps_unsubscribed_users.subscription_date:
-            item = item.split()[0]
-            subscriptions_date_count[item] = (
-                subscriptions_date_count.get(item, 0) + 1
-            )
+        subscriptions_date_count = self.__date_counter__(
+            ps_unsubscribed_users.subscription_date
+        )
 
         keys = []
         start_date = date(2022, 6, 1)
@@ -299,7 +292,6 @@ class Analyze:
         statuses_count = self.__order_dict__(statuses_count)
         keys = list(statuses_count.keys())
         values = list(statuses_count.values())
-
         plt.title("Transactions Statuses")
         plt.pie(values, labels=keys, explode=[0, 0, 0.1], autopct="%1.1f%%")
         plt.xlabel("Nan values are ignored (near to zero)")
