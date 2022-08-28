@@ -173,7 +173,7 @@ class Analyze:
         plt.bar(keys, y4, bottom=self.__sum_array__(y1, y2, y3))
         plt.bar(keys, y5, bottom=self.__sum_array__(y1, y2, y3, y4))
         plt.title("Services/OS")
-        plt.legend(self.services)
+        plt.legend(android_services_count.keys())
         plt.ylabel("Users Number")
         plt.show()
 
@@ -208,7 +208,7 @@ class Analyze:
         plt.bar(keys, y4, bottom=self.__sum_array__(y1, y2, y3))
         plt.bar(keys, y5, bottom=self.__sum_array__(y1, y2, y3, y4))
         plt.title("Services/OS")
-        plt.legend(self.services)
+        plt.legend(unsubscribed_android_services_count.keys())
         plt.ylabel("Unsubscribed Users Count")
         plt.show()
 
