@@ -1,4 +1,5 @@
 import pandas as pd
+from collections import Counter
 from matplotlib import pyplot as plt
 from datetime import date, timedelta
 
@@ -412,4 +413,22 @@ plt.title("TransactionOS/Status")
 plt.legend(transactions_statuses)
 plt.xlabel("OS")
 plt.ylabel("Number")
+plt.show()
+
+
+same_user_count = {}
+for user_id in transactions.user_id:
+    same_user_count[user_id] = same_user_count.get(user_id, 0) + 1
+same_user_purchase_counter = Counter(same_user_count.values())
+keys = sorted(same_user_purchase_counter.keys())
+values = []
+keys2 = []
+for item in keys:
+    if same_user_purchase_counter[item] > 100:
+        keys2.append(item)
+        values.append(same_user_purchase_counter[item])
+plt.bar(keys2, values)
+plt.title("Transactions/Users")
+plt.xlabel("Number of Transaction")
+plt.ylabel("Number of Users")
 plt.show()
