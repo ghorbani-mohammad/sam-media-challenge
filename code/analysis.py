@@ -70,13 +70,11 @@ class Analyze:
         oses_count = {}
         for os in self.oses:
             count = len(self.users[self.users["os_name"] == os])
-            if count > 100:
+            if count > 100:  # here we ignore minor oses
                 oses_count[os] = count
         oses_count = self.__order_dict__(oses_count)
-
         keys = list(oses_count.keys())
         values = list(oses_count.values())
-
         plt.title("Most Famous OS")
         plt.pie(values, labels=keys, explode=[0, 0.1], autopct="%1.1f%%")
         plt.xlabel(
@@ -91,10 +89,8 @@ class Analyze:
             if count > 0:
                 oses_count[os] = count
         oses_count = self.__order_dict__(oses_count)
-
         keys = list(oses_count.keys())
         values = list(oses_count.values())
-
         plt.title("Most Famous OS")
         plt.bar(keys, values)
         for i in range(len(keys)):
