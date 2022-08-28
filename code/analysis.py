@@ -10,8 +10,6 @@ users = Loader(path="data\\users.csv", sep=",").data
 transactions = Loader(path="data\\transactions.tsv", sep="\t").data
 merged_table = pd.merge(users, transactions, how="inner", on="user_id")
 
-
-total_user_rows = len(users) - 1
 services = list(set(users.service))
 operators = list(set(users.phone_operator))
 affiliates = ["aff_4", "aff_2", "aff_3"]
