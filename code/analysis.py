@@ -394,9 +394,9 @@ class Analyzer:
             for operator in operators:
                 temp.append(
                     len(
-                        transactions[
-                            (transactions.status == status)
-                            & (transactions.phone_operator == operator)
+                        self.transactions[
+                            (self.transactions.status == status)
+                            & (self.transactions.phone_operator == operator)
                         ]
                     )
                 )
@@ -420,9 +420,9 @@ class Analyzer:
             for affiliate in affiliates:
                 temp.append(
                     len(
-                        merged_table[
-                            (merged_table.status == status)
-                            & (merged_table.affiliate == affiliate)
+                        self.merged[
+                            (self.merged.status == status)
+                            & (self.merged.affiliate == affiliate)
                         ]
                     )
                 )
@@ -463,7 +463,7 @@ class Analyzer:
 
     def draw_transaction_per_user(self):
         same_user_count = {}
-        for user_id in transactions.user_id:
+        for user_id in self.transactions.user_id:
             same_user_count[user_id] = same_user_count.get(user_id, 0) + 1
         same_user_purchase_counter = Counter(same_user_count.values())
         keys = sorted(same_user_purchase_counter.keys())
@@ -524,9 +524,13 @@ class Draw:
             if callable(getattr(self.analyzer, method_name))
             and "__" not in method_name
         ]
+        draw_all = False
         for method in draw_methods:
-            resp = input(f"{method}? (y/n) ")
-            if resp == "y":
+            if not draw_all:
+                resp = input(f"{method}? (y/n/all) ")
+            if resp == "all":
+                draw_all = True
+            if resp == "y" or draw_all:
                 func = getattr(self.analyzer, method)
                 func()
 
