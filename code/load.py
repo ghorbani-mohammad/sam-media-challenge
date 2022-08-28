@@ -2,7 +2,7 @@ import pandas as pd
 
 
 class Loader:
-    def __init__(self, users_path, transaction_path) -> None:
+    def __init__(self, users_path, transaction_path):
         self.users_data = pd.read_csv(users_path, sep=",")
         self.transactions_data = pd.read_csv(transaction_path, sep="\t")
         self.merged_data = pd.merge(

@@ -1,5 +1,5 @@
 class Preprocess:
-    def __init__(self, users, transactions) -> None:
+    def __init__(self, users, transactions):
         self.users = users
         self.transactions = transactions
 
@@ -23,7 +23,7 @@ class Preprocess:
     def get_unsubscribed_users(self):
         return self.users[self.users["unsubscription_date"].notna()]
 
-    def extract_entities(self) -> None:
+    def extract_entities(self):
         self.services = self.get_services()
         self.operators = self.get_operators()
         self.affiliates = self.get_affiliates()
