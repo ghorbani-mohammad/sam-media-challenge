@@ -1,3 +1,4 @@
+import pandas as pd
 from matplotlib import pyplot as plt
 from datetime import date, timedelta
 
@@ -6,11 +7,15 @@ from load import Loader
 
 users = Loader(path="data\\users.csv", sep=",").file
 transactions = Loader(path="data\\transactions.tsv", sep="\t").file
+merged_table = pd.merge(users, transactions, how="inner", on="user_id")
 
 
 total_user_rows = len(users) - 1
 services = list(set(users.service))
 operators = list(set(users.phone_operator))
+affiliates = list(set(users.affiliate))
+affiliates = ["aff_4", "aff_2", "aff_3"]
+transactions_statuses = ["Failed", "Delivered", "Pending"]
 
 # count each services
 services_count = {}
@@ -346,22 +351,21 @@ plt.show()
 y = []
 for status in transactions_statuses:
     temp = []
-    for operator in operators:
+    for affiliate in affiliates:
         temp.append(
             len(
-                transactions[
-                    (transactions.status == status)
-                    & (transactions.phone_operator == operator)
+                merged_table[
+                    (merged_table.status == status)
+                    & (merged_table.affiliate == affiliate)
                 ]
             )
         )
     y.append(temp)
-
-plt.bar(operators, y[0])
-plt.bar(operators, y[1], bottom=y[0])
-plt.bar(operators, y[2], bottom=list(map(lambda x, y: x + y, y[0], y[1])))
-plt.title("TransactionOperator/Status")
+plt.bar(affiliates, y[0])
+plt.bar(affiliates, y[1], bottom=y[0])
+plt.bar(affiliates, y[2], bottom=list(map(lambda x, y: x + y, y[0], y[1])))
+plt.title("TransactionAffiliate/Status")
 plt.legend(transactions_statuses)
-plt.xlabel("Operator")
+plt.xlabel("Affiliate")
 plt.ylabel("Number")
 plt.show()
