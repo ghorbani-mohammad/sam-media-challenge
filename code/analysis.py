@@ -317,3 +317,26 @@ plt.title("Transactions Statuses")
 plt.pie(values, labels=keys, explode=[0, 0, 0.1], autopct="%1.1f%%")
 plt.xlabel("Nan values are ignored (near to zero)")
 plt.show()
+
+y = []
+for status in transactions_statuses:
+    temp = []
+    for service in services:
+        temp.append(
+            len(
+                transactions[
+                    (transactions.status == status)
+                    & (transactions.service == service)
+                ]
+            )
+        )
+    y.append(temp)
+
+plt.bar(list(services), y[0])
+plt.bar(list(services), y[1], bottom=y[0])
+plt.bar(list(services), y[2], bottom=list(map(lambda x, y: x + y, y[0], y[1])))
+plt.title("TransactionService/Status")
+plt.legend(transactions_statuses)
+plt.xlabel("Service")
+plt.ylabel("Number")
+plt.show()
