@@ -66,6 +66,15 @@ class Analyze:
             result[item] = result.get(item, 0) + 1
         return result
 
+    def __complete_days__(self, data):
+        keys = []
+        start_date = date(2022, 6, 1)
+        for i in self.__june_days__():
+            day = str(start_date + timedelta(days=i))
+            keys.append(day)
+            data[day] = data.get(day, 0)
+        return keys, data
+
     def draw_01_most_famous_service(self):
         services_count = {}
         for service in self.services:
@@ -202,14 +211,9 @@ class Analyze:
         subscriptions_date_count = self.__date_counter__(
             self.users.subscription_date
         )
-        keys = []
-        start_date = date(2022, 6, 1)
-        for i in self.__june_days__():
-            day = str(start_date + timedelta(days=i))
-            keys.append(day)
-            subscriptions_date_count[day] = subscriptions_date_count.get(
-                day, 0
-            )
+        keys, subscriptions_date_count = self.__complete_days__(
+            subscriptions_date_count
+        )
 
         plt.bar([key[5:] for key in keys], subscriptions_date_count.values())
         plt.xticks(rotation=90)
@@ -222,14 +226,9 @@ class Analyze:
         unsubscriptions_date_count = self.__date_counter__(
             self.unsubscribed_users.subscription_date
         )
-        keys = []
-        start_date = date(2022, 6, 1)
-        for i in self.__june_days__():
-            day = str(start_date + timedelta(days=i))
-            keys.append(day)
-            unsubscriptions_date_count[day] = unsubscriptions_date_count.get(
-                day, 0
-            )
+        keys, unsubscriptions_date_count = self.__complete_days__(
+            unsubscriptions_date_count
+        )
 
         plt.bar([key[5:] for key in keys], unsubscriptions_date_count.values())
         plt.xticks(rotation=90)
@@ -243,15 +242,9 @@ class Analyze:
         subscriptions_date_count = self.__date_counter__(
             ps_users.subscription_date
         )
-
-        keys = []
-        start_date = date(2022, 6, 1)
-        for i in self.__june_days__():
-            day = str(start_date + timedelta(days=i))
-            keys.append(day)
-            subscriptions_date_count[day] = subscriptions_date_count.get(
-                day, 0
-            )
+        keys, subscriptions_date_count = self.__complete_days__(
+            subscriptions_date_count
+        )
 
         plt.bar([key[5:] for key in keys], subscriptions_date_count.values())
         plt.xticks(rotation=90)
@@ -266,15 +259,9 @@ class Analyze:
         subscriptions_date_count = self.__date_counter__(
             ps_unsubscribed_users.subscription_date
         )
-
-        keys = []
-        start_date = date(2022, 6, 1)
-        for i in self.__june_days__():
-            day = str(start_date + timedelta(days=i))
-            keys.append(day)
-            subscriptions_date_count[day] = subscriptions_date_count.get(
-                day, 0
-            )
+        keys, subscriptions_date_count = self.__complete_days__(
+            subscriptions_date_count
+        )
 
         plt.bar([key[5:] for key in keys], subscriptions_date_count.values())
         plt.xticks(rotation=90)
