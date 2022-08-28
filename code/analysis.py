@@ -125,14 +125,14 @@ class Analyze:
         )
         plt.show()
 
-    def draw_04_most_famous_os_bar(self):
+    def draw_04_distribution_of_oses_bar(self):
         oses_count = {}
         for os in self.oses:
             oses_count[os] = len(self.users[self.users["os_name"] == os])
         oses_count = self.__order_dict__(oses_count)
         keys = list(oses_count.keys())
         values = list(oses_count.values())
-        plt.title("Most Famous OS")
+        plt.title("Distribution of OSes")
         plt.bar(keys, values)
         for i in range(len(keys)):  # show values on top of bars
             plt.annotate(
