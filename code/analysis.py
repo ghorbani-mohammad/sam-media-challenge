@@ -13,9 +13,7 @@ merged_table = pd.merge(users, transactions, how="inner", on="user_id")
 total_user_rows = len(users) - 1
 services = list(set(users.service))
 operators = list(set(users.phone_operator))
-affiliates = list(set(users.affiliate))
 affiliates = ["aff_4", "aff_2", "aff_3"]
-oses = list(set(users.os_name))
 oses = ["Android", "iOS", "Windows Phone", "iPadOS", "OS X", "HarmonyOS"]
 transactions_statuses = ["Failed", "Delivered", "Pending"]
 
