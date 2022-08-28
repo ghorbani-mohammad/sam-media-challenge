@@ -7,15 +7,25 @@ from preprocess import Preprocess
 
 
 class Analyzer:
-    def __init__(self, users, transactions, merged, unsubscribed_users):
+    def __init__(
+        self,
+        users,
+        transactions,
+        merged,
+        unsubscribed_users,
+        services,
+        operators,
+    ):
         self.users = users
         self.transactions = transactions
         self.merged = merged
         self.unsubscribed_users = unsubscribed_users
+        self.services = services
+        self.operators = operators
 
     def draw_most_famous_service(self):
         services_count = {}
-        for service in services:
+        for service in self.services:
             services_count[service] = len(
                 self.users[self.users["service"] == service]
             )
@@ -100,7 +110,7 @@ class Analyzer:
 
     def draw_service_per_os(self):
         android_services_count = {}
-        for service in services:
+        for service in self.services:
             android_services_count[service] = len(
                 self.users[
                     (self.users["os_name"] == "Android")
@@ -109,7 +119,7 @@ class Analyzer:
             )
 
         ios_services_count = {}
-        for service in services:
+        for service in self.services:
             ios_services_count[service] = len(
                 self.users[
                     (self.users["os_name"] == "iOS")
@@ -159,14 +169,14 @@ class Analyzer:
             bottom=list(map(lambda x, y, z, i: x + y + z + i, y1, y2, y3, y4)),
         )
         plt.title("Services/OS")
-        plt.legend(services)
+        plt.legend(self.services)
         plt.ylabel("Users Number")
         plt.show()
 
     def draw_unsubscription_per_service_per_os(self):
         u_users = self.unsubscribed_users
         unsubscribed_android_services_count = {}
-        for service in services:
+        for service in self.services:
             unsubscribed_android_services_count[service] = len(
                 u_users[
                     (u_users["os_name"] == "Android")
@@ -175,7 +185,7 @@ class Analyzer:
             )
 
         unsubscribed_ios_services_count = {}
-        for service in services:
+        for service in self.services:
             unsubscribed_ios_services_count[service] = len(
                 u_users[
                     (u_users["os_name"] == "iOS")
@@ -225,7 +235,7 @@ class Analyzer:
             bottom=list(map(lambda x, y, z, i: x + y + z + i, y1, y2, y3, y4)),
         )
         plt.title("Services/OS")
-        plt.legend(services)
+        plt.legend(self.services)
         plt.ylabel("Unsubscribed Users Count")
         plt.show()
 
@@ -365,7 +375,7 @@ class Analyzer:
         y = []
         for status in transactions_statuses:
             temp = []
-            for service in services:
+            for service in self.services:
                 temp.append(
                     len(
                         self.transactions[
@@ -376,10 +386,12 @@ class Analyzer:
                 )
             y.append(temp)
 
-        plt.bar(services, y[0])
-        plt.bar(services, y[1], bottom=y[0])
+        plt.bar(self.services, y[0])
+        plt.bar(self.services, y[1], bottom=y[0])
         plt.bar(
-            services, y[2], bottom=list(map(lambda x, y: x + y, y[0], y[1]))
+            self.services,
+            y[2],
+            bottom=list(map(lambda x, y: x + y, y[0], y[1])),
         )
         plt.title("TransactionService/Status")
         plt.legend(transactions_statuses)
@@ -391,7 +403,7 @@ class Analyzer:
         y = []
         for status in transactions_statuses:
             temp = []
-            for operator in operators:
+            for operator in self.operators:
                 temp.append(
                     len(
                         self.transactions[
@@ -402,10 +414,12 @@ class Analyzer:
                 )
             y.append(temp)
 
-        plt.bar(operators, y[0])
-        plt.bar(operators, y[1], bottom=y[0])
+        plt.bar(self.operators, y[0])
+        plt.bar(self.operators, y[1], bottom=y[0])
         plt.bar(
-            operators, y[2], bottom=list(map(lambda x, y: x + y, y[0], y[1]))
+            self.operators,
+            y[2],
+            bottom=list(map(lambda x, y: x + y, y[0], y[1])),
         )
         plt.title("TransactionOperator/Status")
         plt.legend(transactions_statuses)
@@ -505,8 +519,6 @@ loader = Loader("data\\users.csv", "data\\transactions.tsv")
 preprocessed_data = Preprocess(loader.users_data, loader.transactions_data)
 preprocessed_data.extract_entities()
 
-services = preprocessed_data.services
-operators = preprocessed_data.operators
 affiliates = preprocessed_data.affiliates
 oses = preprocessed_data.oses
 transactions_statuses = preprocessed_data.transactions_statuses
@@ -540,6 +552,8 @@ analyzer = Analyzer(
     transactions=loader.transactions_data,
     merged=loader.merged_data,
     unsubscribed_users=unsubscribed_users,
+    services=preprocessed_data.services,
+    operators=preprocessed_data.operators,
 )
 
 drawer = Draw(analyzer)
