@@ -54,19 +54,25 @@ class Analyze:
         return result
 
     def __june_days__(self):
+        # Just return June month days range
         start_date = date(2022, 6, 1)
         end_date = date(2022, 6, 30)
         delta = end_date - start_date
         return range(delta.days + 1)
 
     def __date_counter__(self, data):
+        # This function count values of a column based on date
+        # For example, we want to know how many records we have
+        # in the first date of the June month
         result = {}
         for item in data:
-            item = item.split()[0]
+            item = item.split()[0]  # 2022-06-10 01:00:01 AM, we just need date
             result[item] = result.get(item, 0) + 1
         return result
 
     def __complete_days__(self, data):
+        # This functions add dates that are not present in the data
+        # with value 0
         keys = []
         start_date = date(2022, 6, 1)
         for i in self.__june_days__():
@@ -76,6 +82,9 @@ class Analyze:
         return keys, data
 
     def __complete_days_counter__(self, data):
+        # Jus wrapper of two previous functions
+        # First: count based on date
+        # Second: add days that we have not records with value 0
         result = self.__date_counter__(data)
         keys, result = self.__complete_days__(result)
         return keys, result
