@@ -1,4 +1,3 @@
-import pandas as pd
 from collections import Counter
 from matplotlib import pyplot as plt
 from datetime import date, timedelta
@@ -6,10 +5,10 @@ from datetime import date, timedelta
 from load import Loader
 from preprocess import Preprocess
 
-
-users = Loader(path="data\\users.csv", sep=",").data
-transactions = Loader(path="data\\transactions.tsv", sep="\t").data
-merged_table = pd.merge(users, transactions, how="inner", on="user_id")
+loader = Loader("data\\users.csv", "data\\transactions.tsv")
+users = loader.users_data
+transactions = loader.transactions_data
+merged_table = loader.merged_data
 
 preprocessed_data = Preprocess(users, transactions)
 preprocessed_data.extract_entities()
