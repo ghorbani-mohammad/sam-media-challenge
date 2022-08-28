@@ -301,7 +301,7 @@ plt.ylabel("UnSubscription Count")
 plt.show()
 
 
-transactions_statuses = set(transactions.status)
+transactions_statuses = ["Failed", "Delivered", "Pending"]
 statuses_count = {}
 for status in transactions_statuses:
     statuses_count[status] = len(
@@ -310,8 +310,8 @@ for status in transactions_statuses:
 statuses_count = {
     k: v for k, v in sorted(statuses_count.items(), key=lambda item: item[1])
 }
-keys = list(statuses_count.keys())[1:]
-values = list(statuses_count.values())[1:]
+keys = list(statuses_count.keys())
+values = list(statuses_count.values())
 
 plt.title("Transactions Statuses")
 plt.pie(values, labels=keys, explode=[0, 0, 0.1], autopct="%1.1f%%")
