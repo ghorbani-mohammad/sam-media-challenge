@@ -15,6 +15,8 @@ services = list(set(users.service))
 operators = list(set(users.phone_operator))
 affiliates = list(set(users.affiliate))
 affiliates = ["aff_4", "aff_2", "aff_3"]
+oses = list(set(users.os_name))
+oses = ["Android", "iOS", "Windows Phone", "iPadOS", "OS X", "HarmonyOS"]
 transactions_statuses = ["Failed", "Delivered", "Pending"]
 
 # count each services
@@ -31,7 +33,7 @@ plt.title("Most Famous Service")
 plt.pie(values, labels=keys, explode=[0, 0, 0, 0, 0.1], autopct="%1.1f%%")
 plt.show()
 
-affiliates = set(users.affiliate)
+
 affiliates_count = {}
 for affiliate in affiliates:
     affiliates_count[affiliate] = len(users[users["affiliate"] == affiliate])
@@ -48,7 +50,6 @@ plt.xlabel("Nan values are ignored (near to zero)")
 plt.show()
 
 
-oses = set(users.os_name)
 oses_count = {}
 for os in oses:
     count = len(users[users["os_name"] == os])
@@ -307,7 +308,6 @@ plt.ylabel("UnSubscription Count")
 plt.show()
 
 
-transactions_statuses = ["Failed", "Delivered", "Pending"]
 statuses_count = {}
 for status in transactions_statuses:
     statuses_count[status] = len(
@@ -351,6 +351,30 @@ plt.show()
 y = []
 for status in transactions_statuses:
     temp = []
+    for operator in operators:
+        temp.append(
+            len(
+                transactions[
+                    (transactions.status == status)
+                    & (transactions.phone_operator == operator)
+                ]
+            )
+        )
+    y.append(temp)
+
+plt.bar(operators, y[0])
+plt.bar(operators, y[1], bottom=y[0])
+plt.bar(operators, y[2], bottom=list(map(lambda x, y: x + y, y[0], y[1])))
+plt.title("TransactionOperator/Status")
+plt.legend(transactions_statuses)
+plt.xlabel("Operator")
+plt.ylabel("Number")
+plt.show()
+
+
+y = []
+for status in transactions_statuses:
+    temp = []
     for affiliate in affiliates:
         temp.append(
             len(
@@ -367,5 +391,28 @@ plt.bar(affiliates, y[2], bottom=list(map(lambda x, y: x + y, y[0], y[1])))
 plt.title("TransactionAffiliate/Status")
 plt.legend(transactions_statuses)
 plt.xlabel("Affiliate")
+plt.ylabel("Number")
+plt.show()
+
+
+y = []
+for status in transactions_statuses:
+    temp = []
+    for os in oses:
+        temp.append(
+            len(
+                merged_table[
+                    (merged_table.status == status)
+                    & (merged_table.os_name == os)
+                ]
+            )
+        )
+    y.append(temp)
+plt.bar(oses, y[0])
+plt.bar(oses, y[1], bottom=y[0])
+plt.bar(oses, y[2], bottom=list(map(lambda x, y: x + y, y[0], y[1])))
+plt.title("TransactionOS/Status")
+plt.legend(transactions_statuses)
+plt.xlabel("OS")
 plt.ylabel("Number")
 plt.show()
