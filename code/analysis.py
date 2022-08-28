@@ -5,26 +5,19 @@ from datetime import date, timedelta
 from load import Loader
 from preprocess import Preprocess
 
-loader = Loader("data\\users.csv", "data\\transactions.tsv")
-users = loader.users_data
-transactions = loader.transactions_data
-merged_table = loader.merged_data
-
-preprocessed_data = Preprocess(users, transactions)
-preprocessed_data.extract_entities()
-
-services = preprocessed_data.services
-operators = preprocessed_data.operators
-affiliates = preprocessed_data.affiliates
-oses = preprocessed_data.oses
-transactions_statuses = preprocessed_data.transactions_statuses
-
 
 class Analyzer:
+    def __init__(self, users, transactions, merged):
+        self.users = users
+        self.transactions = transactions
+        self.merged = merged
+
     def draw_most_famous_service(self):
         services_count = {}
         for service in services:
-            services_count[service] = len(users[users["service"] == service])
+            services_count[service] = len(
+                self.users[self.users["service"] == service]
+            )
         services_count = {
             k: v
             for k, v in sorted(
@@ -505,5 +498,20 @@ class Analyzer:
         plt.show()
 
 
-analyzer = Analyzer()
+loader = Loader("data\\users.csv", "data\\transactions.tsv")
+
+preprocessed_data = Preprocess(loader.users_data, loader.transactions_data)
+preprocessed_data.extract_entities()
+
+services = preprocessed_data.services
+operators = preprocessed_data.operators
+affiliates = preprocessed_data.affiliates
+oses = preprocessed_data.oses
+transactions_statuses = preprocessed_data.transactions_statuses
+
+analyzer = Analyzer(
+    users=loader.users_data,
+    transactions=loader.transactions_data,
+    merged=loader.merged_data,
+)
 analyzer.draw_most_famous_service()
