@@ -1,5 +1,5 @@
-import pandas as pd
 from matplotlib import pyplot as plt
+from datetime import date, timedelta
 
 from load import Loader
 
@@ -41,6 +41,26 @@ plt.pie(values, labels=keys, explode=[0, 0, 0.1], autopct="%1.1f%%")
 plt.xlabel("Nan values are ignored (near to zero)")
 plt.show()
 
+
+oses = set(users.os_name)
+oses_count = {}
+for os in oses:
+    count = len(users[users["os_name"] == os])
+    if count > 100:
+        oses_count[os] = count
+oses_count = {
+    k: v for k, v in sorted(oses_count.items(), key=lambda item: item[1])
+}
+
+keys = list(oses_count.keys())
+values = list(oses_count.values())
+
+plt.title("Most Famous OS")
+plt.pie(values, labels=keys, explode=[0, 0.1], autopct="%1.1f%%")
+plt.xlabel(
+    "Just considered OS that have at least 50 users. OS X, Windows Phone, iPadOS, HarmonyOS was ignored."
+)
+plt.show()
 
 
 unsubscribed_users = users[users["unsubscription_date"].notna()]
