@@ -4,17 +4,21 @@ from matplotlib import pyplot as plt
 from datetime import date, timedelta
 
 from load import Loader
+from preprocess import Preprocess
 
 
 users = Loader(path="data\\users.csv", sep=",").data
 transactions = Loader(path="data\\transactions.tsv", sep="\t").data
 merged_table = pd.merge(users, transactions, how="inner", on="user_id")
 
-services = list(set(users.service))
-operators = list(set(users.phone_operator))
-affiliates = ["aff_4", "aff_2", "aff_3"]
-oses = ["Android", "iOS", "Windows Phone", "iPadOS", "OS X", "HarmonyOS"]
-transactions_statuses = ["Failed", "Delivered", "Pending"]
+preprocessed_data = Preprocess(users, transactions)
+preprocessed_data.extract_entities()
+
+services = preprocessed_data.services
+operators = preprocessed_data.operators
+affiliates = preprocessed_data.affiliates
+oses = preprocessed_data.oses
+transactions_statuses = preprocessed_data.transactions_statuses
 
 services_count = {}
 for service in services:
@@ -24,7 +28,6 @@ services_count = {
 }
 keys = list(services_count.keys())
 values = list(services_count.values())
-
 plt.title("Most Famous Service")
 plt.pie(values, labels=keys, explode=[0, 0, 0, 0, 0.1], autopct="%1.1f%%")
 plt.show()
