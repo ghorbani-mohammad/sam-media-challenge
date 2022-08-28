@@ -287,7 +287,6 @@ class Analyze:
                     )
                 )
             y.append(temp)
-
         plt.bar(self.services, y[0])
         plt.bar(self.services, y[1], bottom=y[0])
         plt.bar(
@@ -315,7 +314,6 @@ class Analyze:
                     )
                 )
             y.append(temp)
-
         plt.bar(self.operators, y[0])
         plt.bar(self.operators, y[1], bottom=y[0])
         plt.bar(
