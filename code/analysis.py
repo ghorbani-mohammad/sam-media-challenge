@@ -80,7 +80,7 @@ class Analyze:
         keys, result = self.__complete_days__(result)
         return keys, result
 
-    def draw_01_most_famous_service(self):
+    def draw_01_distribution_of_services(self):
         services_count = {}
         for service in self.services:
             services_count[service] = len(
@@ -89,13 +89,13 @@ class Analyze:
         services_count = self.__order_dict__(services_count)
         keys = list(services_count.keys())
         values = list(services_count.values())
-        plt.title("Most Famous Service")
+        plt.title("Distribution of Services")
         plt.pie(
             values, labels=keys, explode=[0, 0, 0, 0, 0.1], autopct="%1.1f%%"
         )
         plt.show()
 
-    def draw_02_most_famous_affiliate(self):
+    def draw_02_distribution_of_affiliates(self):
         affiliates_count = {}
         for affiliate in self.affiliates:
             affiliates_count[affiliate] = len(
@@ -104,12 +104,12 @@ class Analyze:
         affiliates_count = self.__order_dict__(affiliates_count)
         keys = list(affiliates_count.keys())
         values = list(affiliates_count.values())
-        plt.title("Most Famous Affiliate")
+        plt.title("Distribution of Affiliates")
         plt.pie(values, labels=keys, explode=[0, 0, 0.1], autopct="%1.1f%%")
         plt.xlabel("Nan values are ignored (near to zero)")
         plt.show()
 
-    def draw_03_most_famous_os_pie(self):
+    def draw_03_distribution_of_oses(self):
         oses_count = {}
         for os in self.oses:
             count = len(self.users[self.users["os_name"] == os])
@@ -118,7 +118,7 @@ class Analyze:
         oses_count = self.__order_dict__(oses_count)
         keys = list(oses_count.keys())
         values = list(oses_count.values())
-        plt.title("Most Famous OS")
+        plt.title("Distribution of OSes")
         plt.pie(values, labels=keys, explode=[0, 0.1], autopct="%1.1f%%")
         plt.xlabel(
             "Just considered OS that have at least 50 users. OS X, Windows Phone, iPadOS, HarmonyOS was ignored."
