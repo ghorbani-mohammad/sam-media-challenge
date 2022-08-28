@@ -37,6 +37,17 @@ class Analyze:
             )
         }
 
+    def __get_os_services_count__(self, os):
+        result = {}
+        for service in self.services:
+            result[service] = len(
+                self.users[
+                    (self.users["os_name"] == os)
+                    & (self.users["service"] == service)
+                ]
+            )
+        return result
+
     def draw_most_famous_service(self):
         services_count = {}
         for service in self.services:
@@ -101,28 +112,11 @@ class Analyze:
         plt.show()
 
     def draw_service_per_os(self):
-        android_services_count = {}
-        for service in self.services:
-            android_services_count[service] = len(
-                self.users[
-                    (self.users["os_name"] == "Android")
-                    & (self.users["service"] == service)
-                ]
-            )
-
-        ios_services_count = {}
-        for service in self.services:
-            ios_services_count[service] = len(
-                self.users[
-                    (self.users["os_name"] == "iOS")
-                    & (self.users["service"] == service)
-                ]
-            )
-
+        android_services_count = self.__get_os_services_count__(os="Android")
+        ios_services_count = self.__get_os_services_count__(os="iOS")
         android_services_count = self.__order_dict__(
             android_services_count, reverse=True
         )
-
         ios_services_count = self.__order_dict__(
             ios_services_count, reverse=True
         )
