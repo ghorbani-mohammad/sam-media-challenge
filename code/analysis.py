@@ -6,7 +6,7 @@ from load import Loader
 from preprocess import Preprocess
 
 
-class Analyzer:
+class Analyze:
     def __init__(
         self,
         users,
@@ -491,12 +491,6 @@ class Analyzer:
         plt.show()
 
 
-loader = Loader("data\\users.csv", "data\\transactions.tsv")
-
-preprocessed_data = Preprocess(loader.users_data, loader.transactions_data)
-preprocessed_data.extract_entities()
-
-
 class Draw:
     def __init__(self, analyzer):
         self.analyzer = analyzer
@@ -519,7 +513,12 @@ class Draw:
                 func()
 
 
-analyzer = Analyzer(
+loader = Loader("data\\users.csv", "data\\transactions.tsv")
+
+preprocessed_data = Preprocess(loader.users_data, loader.transactions_data)
+preprocessed_data.extract_entities()
+
+analyzer = Analyze(
     users=loader.users_data,
     transactions=loader.transactions_data,
     merged=loader.merged_data,
