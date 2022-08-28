@@ -256,6 +256,7 @@ plt.xlabel("Date")
 plt.ylabel("UnSubscription Count")
 plt.show()
 
+
 ps_users = users[users.service == "ps"]
 subscriptions_date_count = {}
 for item in ps_users.subscription_date:
@@ -319,6 +320,7 @@ plt.title("Transactions Statuses")
 plt.pie(values, labels=keys, explode=[0, 0, 0.1], autopct="%1.1f%%")
 plt.xlabel("Nan values are ignored (near to zero)")
 plt.show()
+
 
 y = []
 for status in transactions_statuses:
