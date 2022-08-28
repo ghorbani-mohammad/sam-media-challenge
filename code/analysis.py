@@ -9,7 +9,8 @@ transactions = Loader(path="data\\transactions.tsv", sep="\t").file
 
 
 total_user_rows = len(users) - 1
-services = set(users.service)
+services = list(set(users.service))
+operators = list(set(users.phone_operator))
 
 # count each services
 services_count = {}
