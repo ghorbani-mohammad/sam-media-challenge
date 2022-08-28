@@ -210,7 +210,7 @@ class Analyze:
         plt.bar([key[5:] for key in keys], subscriptions_date_count.values())
         plt.xticks(rotation=90)
         plt.title("Subscription/Date")
-        plt.xlabel("Date")
+        plt.xlabel("June Month")
         plt.ylabel("Subscription Count")
         plt.show()
 
@@ -235,7 +235,7 @@ class Analyze:
         plt.bar([key[5:] for key in keys], unsubscriptions_date_count.values())
         plt.xticks(rotation=90)
         plt.title("UnSubscription/Date")
-        plt.xlabel("Date")
+        plt.xlabel("June Month")
         plt.ylabel("UnSubscription Count")
         plt.show()
 
@@ -260,7 +260,7 @@ class Analyze:
         plt.bar([key[5:] for key in keys], subscriptions_date_count.values())
         plt.xticks(rotation=90)
         plt.title("PS-Subscription/Date")
-        plt.xlabel("Date")
+        plt.xlabel("June Month")
         plt.ylabel("Subscription Count")
         plt.show()
 
@@ -286,7 +286,7 @@ class Analyze:
         plt.bar([key[5:] for key in keys], subscriptions_date_count.values())
         plt.xticks(rotation=90)
         plt.title("PS-UnSubscription/Date")
-        plt.xlabel("Date")
+        plt.xlabel("June Month")
         plt.ylabel("UnSubscription Count")
         plt.show()
 
