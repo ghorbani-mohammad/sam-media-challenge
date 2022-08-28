@@ -518,20 +518,14 @@ analyzer = Analyzer(
     merged=loader.merged_data,
     unsubscribed_users=unsubscribed_users,
 )
-analyzer.draw_most_famous_service()
-analyzer.draw_most_famous_affiliate()
-analyzer.draw_most_famous_os_pie()
-analyzer.draw_most_famous_os_bar()
-analyzer.draw_service_per_os()
-analyzer.draw_unsubscription_per_service_per_os()
-analyzer.draw_subscription_per_day()
-analyzer.draw_unsubscription_per_day()
-analyzer.draw_ps_subscription_per_day()
-analyzer.draw_ps_unsubscription_per_day()
-analyzer.draw_transaction_status()
-analyzer.draw_transaction_status_per_service()
-analyzer.draw_transaction_status_per_operator()
-analyzer.draw_transaction_status_per_affiliate()
-analyzer.draw_transaction_status_per_os()
-analyzer.draw_transaction_per_user()
-analyzer.draw_delivered_transaction_per_user()
+
+draw_methods = [
+    method_name
+    for method_name in dir(analyzer)
+    if callable(getattr(analyzer, method_name)) and "__" not in method_name
+]
+for method in draw_methods:
+    resp = input(f"{method}? (y/n) ")
+    if resp == "y":
+        func = getattr(analyzer, method)
+        func()
