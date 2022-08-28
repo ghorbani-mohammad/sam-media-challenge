@@ -6,7 +6,10 @@ This is a challenge about extracting insights from data.
 git clone git@github.com:ghorbani-mohammad/sam-media-challenge.git
 cd sam-media-challenge
 python -m venv .venv
-<!-- activate environment -->
+
+<!-- activate environment and install requirements -->
+.venv\Scripts\activate.bat
 pip install -r requirements.txt
+
 python code\analysis.py
 ```
